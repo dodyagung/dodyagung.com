@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import { Analytics } from "./components/analytics";
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://chronark.com'),
   title: {
     default: "chronark.com",
     template: "%s | chronark.com",
