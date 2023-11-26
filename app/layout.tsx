@@ -5,21 +5,20 @@ import { Metadata } from "next";
 import { Analytics } from "./components/analytics";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://chronark.com'),
+  metadataBase: new URL("https://chronark.com"),
   title: {
-    default: "chronark.com",
-    template: "%s | chronark.com",
+    default: "Hi' I'm Dody",
+    template: "%s | Hi' I'm Dody",
   },
-  description: "Co-founder of unkey.dev and founder of planetfall.io",
+  description: "A backend enthusiast. Loves Golang and Typescript.",
   openGraph: {
-    title: "chronark.com",
-    description:
-      "Co-founder of unkey.dev and founder of planetfall.io",
-    url: "https://chronark.com",
-    siteName: "chronark.com",
+    title: "Hi' I'm Dody",
+    description: "A backend enthusiast. Loves Golang and Typescript.",
+    url: "https://dodyagung.com",
+    siteName: "dodyagung.com",
     images: [
       {
-        url: "https://chronark.com/og.png",
+        url: "https://dodyagung.com/og.png",
         width: 1920,
         height: 1080,
       },
@@ -39,7 +38,7 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: "Chronark",
+    title: "Hi, I'm Dody",
     card: "summary_large_image",
   },
   icons: {
@@ -67,8 +66,9 @@ export default function RootLayout({
         <Analytics />
       </head>
       <body
-        className={`bg-black ${process.env.NODE_ENV === "development" ? "debug-screens" : undefined
-          }`}
+        className={`bg-black ${
+          process.env.NODE_ENV === "development" ? "debug-screens" : undefined
+        }`}
       >
         {children}
       </body>
