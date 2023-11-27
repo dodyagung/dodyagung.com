@@ -2,18 +2,17 @@ import "../global.css";
 import { Inter } from "next/font/google";
 import LocalFont from "next/font/local";
 import { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/react";
-// import { Analytics } from "./components/analytics";
+import { Analytics } from "./components/analytics";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://chronark.com"),
   title: {
-    default: "Hi' I'm Dody",
-    template: "%s | Hi' I'm Dody",
+    default: "Hi, I'm Dody",
+    template: "%s | Hi, I'm Dody",
   },
   description: "A backend enthusiast. Loves Golang and Typescript.",
   openGraph: {
-    title: "Hi' I'm Dody",
+    title: "Hi, I'm Dody",
     description: "A backend enthusiast. Loves Golang and Typescript.",
     url: "https://dodyagung.com",
     siteName: "dodyagung.com",
