@@ -27,7 +27,6 @@
     "remark-gfm": "^3.0.1"
   },
   "devDependencies": {
-    "@opentelemetry/api": "1.4.1",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.10",
     "@types/node": "^20.10.2",
@@ -50,13 +49,6 @@
   },
   "pnpm": {
     "overrides": {
-      "@opentelemetry/api": "1.4.1",
-      "@opentelemetry/core": "1.13.0",
-      "@opentelemetry/exporter-trace-otlp-grpc": "0.39.1",
-      "@opentelemetry/resources": "1.13.0",
-      "@opentelemetry/sdk-trace-base": "1.13.0",
-      "@opentelemetry/sdk-trace-node": "1.13.0",
-      "@opentelemetry/semantic-conventions": "1.13.0",
       "remark-gfm": "^3.0.1"
     }
   }
