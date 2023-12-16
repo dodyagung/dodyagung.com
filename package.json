@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "pnpm eslint 'app/**'"
+    "lint": "pnpm eslint 'app/**' 'pages/**'"
   },
   "dependencies": {
     "@next/mdx": "^14.0.4",
