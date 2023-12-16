@@ -16,6 +16,7 @@ type Props = {
 
 const redis = Redis.fromEnv();
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export async function generateStaticParams(): Promise<Props["params"][]> {
   return allProjects
     .filter((p) => p.published)
