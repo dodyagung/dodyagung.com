@@ -102,7 +102,7 @@ const components = {
     alt,
     ...props
   }: React.ImgHTMLAttributes<HTMLImageElement>) => (
-    <img
+    <Image
       className={clsx("rounded-md border border-zinc-200", className)}
       alt={alt}
       {...props}
