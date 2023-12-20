@@ -105,6 +105,8 @@ const components = {
     <Image
       className={clsx("rounded-md border border-zinc-200", className)}
       alt={alt}
+      width={750}
+      height={750}
       {...props}
     />
   ),
