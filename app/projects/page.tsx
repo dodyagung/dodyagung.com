@@ -25,7 +25,9 @@ export default async function ProjectsPage() {
 
   const featured = allProjects.find((project) => project.slug === "citcuit")!;
   const top2 = allProjects.find((project) => project.slug === "dodyagung.com")!;
-  const top3 = allProjects.find((project) => project.slug === "highstorm")!;
+  const top3 = allProjects.find(
+    (project) => project.slug === "aws-face-recognition",
+  )!;
   const sorted = allProjects
     .filter((p) => p.published)
     .filter(
