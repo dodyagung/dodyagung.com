@@ -12,6 +12,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -31,6 +37,9 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          build-args: |
+            "UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}"
+            "UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}"
           file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
