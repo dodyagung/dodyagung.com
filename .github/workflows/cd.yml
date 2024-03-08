@@ -38,7 +38,7 @@ jobs:
         with:
           context: .
           build-args: |
-            "UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}"
+            "UPSTASH_REDIS_REST_URL=${{ vars.UPSTASH_REDIS_REST_URL }}"
             "UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}"
           file: ./Dockerfile
           push: true
