@@ -60,9 +60,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: VM1 - Remote SSH and update container with latest docker image
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ vars.SSH_VM1_HOST }}
           username: ${{ vars.SSH_VM1_USER }}
-          password: ${{ secrets.SSH_VM1_KEY }}
-          script: whoami
+          key: ${{ secrets.SSH_VM1_KEY }}
+          script: |
+            whoami
