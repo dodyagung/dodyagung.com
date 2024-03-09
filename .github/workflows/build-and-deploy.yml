@@ -6,7 +6,7 @@ on:
       - 'dodyagung.com'
 
 jobs:
-  Build:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -49,11 +49,11 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  Deploy:
-    needs: Build
+  deploy_vm1:
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: VM1 - Remote SSH and update container with latest docker image
+      - name: Remote SSH and update container with latest docker image
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ vars.SSH_VM1_HOST }}
@@ -68,7 +68,12 @@ jobs:
               -e UPSTASH_REDIS_REST_URL=${{ vars.UPSTASH_REDIS_REST_URL }} \
               -e UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }} \
               -d ${{ github.repository }}
-      - name: VM2 - Remote SSH and update container with latest docker image
+
+  deploy_vm2:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remote SSH and update container with latest docker image
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ vars.SSH_VM2_HOST }}
