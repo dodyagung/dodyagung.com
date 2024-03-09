@@ -29,14 +29,9 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: |
-            dodyagung/dodyagung.com
-            ghcr.io/${{ github.repository }}
+          images: ghcr.io/${{ github.repository }}:latest
 
       - name: Build and push Docker image
-        env: 
-          UPSTASH_REDIS_REST_URL: ${{ vars.UPSTASH_REDIS_REST_URL }}
-          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
         uses: docker/build-push-action@v5
         with:
           context: .
