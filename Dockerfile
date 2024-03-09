@@ -9,7 +9,7 @@ RUN corepack enable pnpm
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 COPY package.json pnpm-lock.yaml* ./
-RUN pnpm i --prod --frozen-lockfile 
+RUN pnpm i --frozen-lockfile 
 
 # Rebuild the source code only when needed
 FROM base AS builder
