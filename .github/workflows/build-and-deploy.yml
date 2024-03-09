@@ -61,5 +61,25 @@ jobs:
           key: ${{ secrets.SSH_VM1_KEY }}
           script: |
             docker rm -f ${{ github.event.repository.name }}
-            docker pull ${{ github.repository }}
-            docker run --name ${{ github.event.repository.name }} -p 80:3000 -d ${{ github.repository }}
+            docker rmi ${{ github.repository }}
+            docker run --name ${{ github.event.repository.name }} \
+              -p 80:3000 \
+              -e NEXT_TELEMETRY_DISABLED=1 \
+              -e UPSTASH_REDIS_REST_URL=${{ vars.UPSTASH_REDIS_REST_URL }} \
+              -e UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }} \
+              -d ${{ github.repository }}
+      - name: VM2 - Remote SSH and update container with latest docker image
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ vars.SSH_VM2_HOST }}
+          username: ${{ vars.SSH_VM2_USER }}
+          key: ${{ secrets.SSH_VM2_KEY }}
+          script: |
+            docker rm -f ${{ github.event.repository.name }}
+            docker rmi ${{ github.repository }}
+            docker run --name ${{ github.event.repository.name }} \
+              -p 80:3000 \
+              -e NEXT_TELEMETRY_DISABLED=1 \
+              -e UPSTASH_REDIS_REST_URL=${{ vars.UPSTASH_REDIS_REST_URL }} \
+              -e UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }} \
+              -d ${{ github.repository }}
