@@ -6,7 +6,6 @@ const nextConfig = {
   experimental: {
     mdxRs: true,
   },
-  output: "standalone", // https://github.com/vercel/next.js/tree/canary/examples/with-docker
 };
 
 export default withContentlayer(nextConfig);
