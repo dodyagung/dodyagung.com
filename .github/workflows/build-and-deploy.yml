@@ -34,12 +34,12 @@ jobs:
             ghcr.io/${{ github.repository }}
 
       - name: Build and push Docker image
+        env: 
+          UPSTASH_REDIS_REST_URL: ${{ vars.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
         uses: docker/build-push-action@v5
         with:
           context: .
-          build-args: |
-            "UPSTASH_REDIS_REST_URL=${{ vars.UPSTASH_REDIS_REST_URL }}"
-            "UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}"
           file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}

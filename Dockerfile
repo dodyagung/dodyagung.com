@@ -13,7 +13,6 @@ RUN pnpm i --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM base AS builder
-ENV UPSTASH_REDIS_REST_URL=
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
 RUN pnpm build
