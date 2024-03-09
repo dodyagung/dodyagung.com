@@ -33,7 +33,11 @@ jobs:
             ${{ github.repository }}
             ghcr.io/${{ github.repository }}
           tags: |
-            type=schedule,enable=true,priority=1000,prefix=,suffix=,pattern={{date 'YYYYMMDD-hhmmss' tz='Asia/Jakarta'}}
+            type=schedule,pattern=nightly,enable=true,priority=1000
+            type=ref,event=branch,enable=false,priority=600
+            type=ref,event=tag,enable=true,priority=600
+            type=ref,event=pr,prefix=pr-,enable=true,priority=600
+            type=raw,enable=true,priority=200,prefix=,suffix=,value={{date 'YYYYMMDD-HHmmss' tz='Asia/Jakarta'}}
           flavor: |
             latest=true
 
