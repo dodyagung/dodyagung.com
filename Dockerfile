@@ -19,6 +19,8 @@ RUN pnpm build
 
 # Production image, copy all the files and run next
 FROM base AS runner
+ENV UPSTASH_REDIS_REST_URL ${1:+1}
+ENV UPSTASH_REDIS_REST_TOKEN ${1:+1}
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 RUN mkdir .next
