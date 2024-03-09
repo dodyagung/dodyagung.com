@@ -32,6 +32,8 @@ jobs:
           images: |
             ${{ github.repository }}
             ghcr.io/${{ github.repository }}
+          tags: |
+            type=schedule,pattern={{date 'YYYYMMDD-hhmmss' tz='Asia/Jakarta'}}
           flavor: |
             latest=true
 
