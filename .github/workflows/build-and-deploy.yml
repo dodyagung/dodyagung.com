@@ -64,6 +64,7 @@ jobs:
             docker rmi ${{ github.repository }}
             docker run --name ${{ github.event.repository.name }} \
               -p 80:3000 \
+              -e NODE_ENV=production \
               -e NEXT_TELEMETRY_DISABLED=1 \
               -e UPSTASH_REDIS_REST_URL=${{ vars.UPSTASH_REDIS_REST_URL }} \
               -e UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }} \
@@ -84,6 +85,7 @@ jobs:
             docker rmi ${{ github.repository }}
             docker run --name ${{ github.event.repository.name }} \
               -p 80:3000 \
+              -e NODE_ENV=production \
               -e NEXT_TELEMETRY_DISABLED=1 \
               -e UPSTASH_REDIS_REST_URL=${{ vars.UPSTASH_REDIS_REST_URL }} \
               -e UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }} \
