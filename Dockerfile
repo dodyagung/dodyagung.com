@@ -18,8 +18,6 @@ RUN corepack enable pnpm && pnpm build
 # Production image, copy all the files and run next
 FROM base AS runner
 ENV NODE_ENV production
-# https://nextjs.org/docs/messages/sharp-missing-in-production
-ENV NEXT_SHARP_PATH /app/node_modules/sharp
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 RUN mkdir .next
