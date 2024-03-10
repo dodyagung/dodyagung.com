@@ -1,6 +1,5 @@
 # Base image
 FROM node:lts-alpine AS base
-ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /app
 RUN corepack enable pnpm
