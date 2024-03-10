@@ -6,6 +6,7 @@ const nextConfig = {
   experimental: {
     mdxRs: true,
   },
+  output: "standalone",
 };
 
 export default withContentlayer(nextConfig);
