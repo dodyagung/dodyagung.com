@@ -5,14 +5,17 @@ WORKDIR /app
 
 # Install dependencies only when needed
 FROM base AS deps
-# RUN apk add --no-cache libc6-compat
+# https://github.com/nodejs/docker-node?tab=readme-ov-file#nodealpine
+RUN apk add --no-cache libc6-compat 
 COPY package.json pnpm-lock.yaml* ./
 RUN corepack enable pnpm && pnpm i --frozen-lockfile 
 
 # Rebuild the source code only when needed
 FROM base AS builder
-COPY . .
+# https://github.com/nodejs/docker-node?tab=readme-ov-file#nodealpine
+RUN apk add --no-cache libc6-compat
 COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 RUN corepack enable pnpm && pnpm build && pnpm prune --prod --no-optional
 
 # Production image, copy all the files and run next
@@ -22,12 +25,15 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
+# standalone mode (https://nextjs.org/docs/pages/api-reference/next-config-js/output)
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+# regular mode (next start)
 # COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 # COPY --from=builder /app/node_modules ./node_modules
 # COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/public ./public
+# COPY --from=builder /app/public ./public
 
 USER nextjs
 EXPOSE 3000
