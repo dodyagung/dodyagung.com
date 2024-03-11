@@ -1,19 +1,17 @@
 # Base image
 FROM node:lts-alpine AS base
+# https://github.com/nodejs/docker-node?tab=readme-ov-file#nodealpine
+RUN apk add --no-cache libc6-compat 
 ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /app
 
 # Install dependencies only when needed
 FROM base AS deps
-# https://github.com/nodejs/docker-node?tab=readme-ov-file#nodealpine
-RUN apk add --no-cache libc6-compat 
 COPY package.json pnpm-lock.yaml* ./
 RUN corepack enable pnpm && pnpm i --frozen-lockfile 
 
 # Rebuild the source code only when needed
 FROM base AS builder
-# https://github.com/nodejs/docker-node?tab=readme-ov-file#nodealpine
-RUN apk add --no-cache libc6-compat
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN corepack enable pnpm && pnpm build && pnpm prune --prod --no-optional
