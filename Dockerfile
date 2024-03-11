@@ -13,7 +13,7 @@ RUN corepack enable pnpm && pnpm i --frozen-lockfile
 FROM base AS builder
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-RUN corepack enable pnpm && pnpm build
+RUN corepack enable pnpm && pnpm build && pnpm prune --prod --no-optional
 
 # Production image, copy all the files and run next
 FROM base AS runner
