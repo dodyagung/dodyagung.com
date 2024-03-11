@@ -8,13 +8,16 @@ WORKDIR /app
 # Install dependencies only when needed
 FROM base AS deps
 COPY package.json pnpm-lock.yaml* ./
-RUN corepack enable pnpm && pnpm i --frozen-lockfile 
+RUN corepack enable pnpm
+RUN pnpm i --frozen-lockfile 
 
 # Rebuild the source code only when needed
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN corepack enable pnpm && pnpm build && pnpm prune --prod --no-optional
+RUN corepack enable pnpm
+RUN pnpm build 
+RUN pnpm prune --prod --no-optional
 
 # Production image, copy all the files and run next
 FROM base AS runner
