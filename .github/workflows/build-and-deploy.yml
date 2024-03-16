@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - 'dodyagung.com'
+      - "dodyagung.com"
 
 jobs:
   build:
@@ -40,7 +40,7 @@ jobs:
             type=raw,enable=true,priority=200,prefix=,suffix=,value={{date 'YYYYMMDD-HHmmss' tz='Asia/Jakarta'}}
           flavor: |
             latest=true
-        
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -63,7 +63,7 @@ jobs:
             docker rm -f ${{ github.event.repository.name }}
             docker rmi ${{ github.repository }}
             docker run --name ${{ github.event.repository.name }} \
-              -p 80:3000 \
+              -p 82:3000 \
               -e UPSTASH_REDIS_REST_URL=${{ vars.UPSTASH_REDIS_REST_URL }} \
               -e UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }} \
               -d ${{ github.repository }}
@@ -82,7 +82,7 @@ jobs:
             docker rm -f ${{ github.event.repository.name }}
             docker rmi ${{ github.repository }}
             docker run --name ${{ github.event.repository.name }} \
-              -p 80:3000 \
+              -p 82:3000 \
               -e UPSTASH_REDIS_REST_URL=${{ vars.UPSTASH_REDIS_REST_URL }} \
               -e UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }} \
               -d ${{ github.repository }}
