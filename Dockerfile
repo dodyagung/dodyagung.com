@@ -28,6 +28,7 @@ RUN adduser --system --uid 1001 nextjs
 # standalone mode (https://nextjs.org/docs/pages/api-reference/next-config-js/output)
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 # regular mode (next start)
 # COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 # COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
