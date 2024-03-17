@@ -8,7 +8,7 @@ WORKDIR /app
 # Install dependencies only when needed
 FROM base AS deps
 COPY package.json pnpm-lock.yaml* ./
-RUN apk add --no-cache python3
+RUN apk add --no-cache python3 make
 RUN corepack enable pnpm
 RUN pnpm i --frozen-lockfile 
 
