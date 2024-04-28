@@ -69,6 +69,7 @@ jobs:
               -e NEW_RELIC_APP_NAME=${{ vars.NEW_RELIC_APP_NAME }} \
               -e NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }} \
               -e NEW_RELIC_LOG=stdout \
+              --restart unless-stopped \
               -d ${{ github.repository }}
 
   deploy_vm2:
@@ -91,4 +92,5 @@ jobs:
               -e NEW_RELIC_APP_NAME=${{ vars.NEW_RELIC_APP_NAME }} \
               -e NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }} \
               -e NEW_RELIC_LOG=stdout \
+              --restart unless-stopped \
               -d ${{ github.repository }}
