@@ -49,39 +49,16 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  deploy_vm1:
+  deploy_vm:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Remote SSH and update container with latest docker image
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ vars.SSH_VM1_HOST }}
-          username: ${{ vars.SSH_VM1_USER }}
-          key: ${{ secrets.SSH_VM1_KEY }}
-          script: |
-            docker rm -f ${{ github.event.repository.name }}
-            docker rmi ${{ github.repository }}
-            docker run --name ${{ github.event.repository.name }} \
-              -p ${{ vars.PORT }}:3000 \
-              -e UPSTASH_REDIS_REST_URL=${{ vars.UPSTASH_REDIS_REST_URL }} \
-              -e UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }} \
-              -e NEW_RELIC_APP_NAME=${{ vars.NEW_RELIC_APP_NAME }} \
-              -e NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }} \
-              -e NEW_RELIC_LOG=stdout \
-              --restart always \
-              -d ${{ github.repository }}
-
-  deploy_vm2:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Remote SSH and update container with latest docker image
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ vars.SSH_VM2_HOST }}
-          username: ${{ vars.SSH_VM2_USER }}
-          key: ${{ secrets.SSH_VM2_KEY }}
+          host: ${{ vars.SSH_VM_HOST }}
+          username: ${{ vars.SSH_VM_USER }}
+          key: ${{ secrets.SSH_VM_KEY }}
           script: |
             docker rm -f ${{ github.event.repository.name }}
             docker rmi ${{ github.repository }}
