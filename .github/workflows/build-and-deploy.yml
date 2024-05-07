@@ -66,8 +66,6 @@ jobs:
               -p ${{ vars.PORT }}:3000 \
               -e UPSTASH_REDIS_REST_URL=${{ vars.UPSTASH_REDIS_REST_URL }} \
               -e UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }} \
-              -e NEW_RELIC_APP_NAME=${{ vars.NEW_RELIC_APP_NAME }} \
-              -e NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }} \
-              -e NEW_RELIC_LOG=stdout \
+              -e TZ=${{ vars.TZ }} \
               --restart unless-stopped \
               -d ${{ github.repository }}

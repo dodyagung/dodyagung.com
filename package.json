@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@newrelic/next": "^0.8.0",
     "@next/mdx": "^14.1.3",
     "@upstash/redis": "^1.28.4",
     "contentlayer": "^0.3.4",
