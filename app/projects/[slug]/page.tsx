@@ -14,10 +14,7 @@ type Props = {
   };
 };
 
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL ?? "",
-  token: process.env.UPSTASH_REDIS_REST_TOKEN ?? "",
-});
+const redis = Redis.fromEnv();
 
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function generateStaticParams(): Promise<Props["params"][]> {
