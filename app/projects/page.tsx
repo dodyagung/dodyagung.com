@@ -26,11 +26,11 @@ export default async function ProjectsPage() {
     {} as Record<string, number>,
   );
 
-  const featured = allProjects.find(
-    (project) => project.slug === "telegram-sale-bot",
+  const featured = allProjects.find((project) => project.slug === "citcuit")!;
+  const top2 = allProjects.find((project) => project.slug === "dodyagung.com")!;
+  const top3 = allProjects.find(
+    (project) => project.slug === "aws-face-recognition",
   )!;
-  const top2 = allProjects.find((project) => project.slug === "citcuit")!;
-  const top3 = allProjects.find((project) => project.slug === "dodyagung.com")!;
   const sorted = allProjects
     .filter((p) => p.published)
     .filter(
