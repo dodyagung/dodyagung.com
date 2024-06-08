@@ -14,7 +14,7 @@
     "@upstash/redis": "1.30.1",
     "contentlayer": "^0.3.4",
     "framer-motion": "^11.2.10",
-    "lucide-react": "^0.378.0",
+    "lucide-react": "^0.390.0",
     "markdown-wasm": "^1.2.0",
     "next": "^14.2.3",
     "next-contentlayer": "^0.3.4",
@@ -25,7 +25,7 @@
     "rehype-pretty-code": "^0.13.2",
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.0",
-    "sharp": "0.33.3"
+    "sharp": "0.33.4"
   },
   "devDependencies": {
     "@emotion/is-prop-valid": "^1.2.2",
@@ -39,7 +39,7 @@
     "@typescript-eslint/parser": "^7.12.0",
     "autoprefixer": "^10.4.19",
     "eslint": "^9.4.0",
-    "eslint-config-love": "^47.0.0",
+    "eslint-config-love": "^52.0.0",
     "eslint-config-next": "14.2.3",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
