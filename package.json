@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@next/mdx": "^14.2.3",
-    "@upstash/redis": "1.31.0",
+    "@upstash/redis": "1.31.1",
     "contentlayer": "^0.3.4",
     "framer-motion": "^11.2.10",
     "lucide-react": "^0.390.0",
@@ -55,7 +55,7 @@
   },
   "pnpm": {
     "overrides": {
-      "@upstash/redis": "1.31.0"
+      "@upstash/redis": "1.31.1"
     }
   }
 }

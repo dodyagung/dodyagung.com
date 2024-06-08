@@ -1,9 +1,5 @@
 name: Build and Deploy
 
-env:
-  UPSTASH_REDIS_REST_URL: ${{ vars.UPSTASH_REDIS_REST_URL }}
-  UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
-
 on:
   push:
     branches:
