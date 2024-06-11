@@ -1,7 +1,7 @@
 # Base image
 FROM node:lts-alpine AS base
 # https://github.com/nodejs/docker-node?tab=readme-ov-file#nodealpine
-RUN apk add --no-cache libc6-compat 
+RUN apk add --no-cache gcompat
 ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /app
 
