@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@upstash/redis': 1.31.0
+  '@upstash/redis': 1.32.0
 
 importers:
 
@@ -15,8 +15,8 @@ importers:
         specifier: ^14.2.5
         version: 14.2.5
       '@upstash/redis':
-        specifier: 1.31.0
-        version: 1.31.0
+        specifier: 1.32.0
+        version: 1.32.0
       contentlayer:
         specifier: ^0.3.4
         version: 0.3.4(esbuild@0.23.0)(markdown-wasm@1.2.0)
@@ -973,8 +973,8 @@ packages:
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
-  '@upstash/redis@1.31.0':
-    resolution: {integrity: sha512-twJe5/VJ+pBnp415u/Uwxh2GkZ2WbCZfB8yLuUuXxhL9NS8Muf1/BcM7+2u4TlSWFE0WaAVPpRVdELSvjxPQFQ==}
+  '@upstash/redis@1.32.0':
+    resolution: {integrity: sha512-KBzCjOgF9mhNcV4HTz7U8g7QTdLVEKi1sSe/97u0E+HkzdPmDt3j9lIPIHEUJz6RrdVH6s4HW4JcPvMLC7w3ew==}
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -3997,7 +3997,7 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
-  '@upstash/redis@1.31.0':
+  '@upstash/redis@1.32.0':
     dependencies:
       crypto-js: 4.2.0
 
