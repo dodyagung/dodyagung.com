@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@next/mdx": "^14.2.5",
-    "@upstash/redis": "1.33.0",
+    "@upstash/redis": "1.31.0",
     "contentlayer": "^0.3.4",
     "framer-motion": "^11.3.8",
     "lucide-react": "^0.411.0",
@@ -52,5 +52,10 @@
     "tailwindcss": "^3.4.6",
     "tailwindcss-debug-screens": "^2.2.1",
     "typescript": "^5.5.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "@upstash/redis": "1.31.0"
+    }
   }
 }
