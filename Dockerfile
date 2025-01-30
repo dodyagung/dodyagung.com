@@ -22,7 +22,7 @@ RUN pnpm prune --prod --no-optional
 
 # Production image, copy all the files and run next
 FROM base AS runner
-ENV NODE_ENV production
+ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
