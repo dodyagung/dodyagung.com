@@ -22,8 +22,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "contentlayer/generated": ["./.contentlayer/generated"]  
-
+      "contentlayer/generated": ["./.contentlayer/generated"],
+      // https://stackoverflow.com/questions/78516645/warning-deprecationwarning-the-punycode-module-is-deprecated-please-use-a-u
+      // https://github.com/mathiasbynens/punycode.js/issues/137
+      "punycode": ["./node_modules/punycode/"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
