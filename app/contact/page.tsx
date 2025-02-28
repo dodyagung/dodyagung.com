@@ -1,26 +1,27 @@
 "use client";
-import { Github, Mail, Twitter } from "lucide-react";
+
+import { SiGithub, SiGmail, SiX } from '@icons-pack/react-simple-icons';
 import Link from "next/link";
 import { Navigation } from "../components/nav";
 import { Card } from "../components/card";
 
 const socials = [
 	{
-		icon: <Twitter size={20} />,
+		icon: <SiX size={20} />,
 		href: "https://twitter.com/dodyags",
-		label: "Twitter",
+		label: "X",
 		handle: "@dodyags",
 	},
 	{
-		icon: <Mail size={20} />,
+		icon: <SiGmail size={20} />,
 		href: "mailto:dodyags@gmail.com",
 		label: "Email",
 		handle: "dodyags@gmail.com",
 	},
 	{
-		icon: <Github size={20} />,
+		icon: <SiGithub size={20} />,
 		href: "https://github.com/dodyagung",
-		label: "Github",
+		label: "GitHub",
 		handle: "dodyagung",
 	},
 ];
