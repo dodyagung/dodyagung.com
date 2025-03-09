@@ -1,0 +1,79 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme inline {
+  --font-display: var(--font-cal);
+
+  --animate-fade-in: fade-in 3s ease-in-out forwards;
+  @keyframes fade-in {
+    0% {
+      opacity: 0%;
+    }
+    75% {
+      opacity: 0%;
+    }
+    100% {
+      opacity: 100%;
+    }
+  }
+
+  --animate-fade-left: fade-left 3s ease-in-out forwards;
+  @keyframes fade-left {
+    0% {
+      transform: translateX(100%);
+      opacity: 0%;
+    }
+    30% {
+      transform: translateX(0%);
+      opacity: 100%;
+    }
+    100% {
+      opacity: 0%;
+    }
+  }
+
+  --animate-fade-right: fade-right 3s ease-in-out forwards;
+  @keyframes fade-right {
+    0% {
+      transform: translateX(-100%);
+      opacity: 0%;
+    }
+    30% {
+      transform: translateX(0%);
+      opacity: 100%;
+    }
+    100% {
+      opacity: 0%;
+    }
+  }
+
+  --animate-title: title 3s ease-out forwards;
+  @keyframes title {
+    0% {
+      line-height: 0%;
+      letter-spacing: 0.25em;
+      opacity: 0;
+    }
+    25% {
+      line-height: 0%;
+      opacity: 0%;
+    }
+    80% {
+      line-height: 100%;
+    }
+    100% {
+      line-height: 100%;
+      opacity: 100%;
+    }
+  }
+}
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+}

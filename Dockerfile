@@ -9,7 +9,6 @@ WORKDIR /app
 # Install dependencies only when needed
 FROM base AS deps
 COPY package.json pnpm-lock.yaml* ./
-RUN apk add --no-cache python3 make g++
 RUN pnpm i --frozen-lockfile 
 
 # Rebuild the source code only when needed
@@ -26,9 +25,9 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # standalone mode (https://nextjs.org/docs/pages/api-reference/next-config-js/output)
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 # regular mode (next start)
 # COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 # COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json

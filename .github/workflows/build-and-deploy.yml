@@ -64,9 +64,5 @@ jobs:
             docker rmi ${{ github.repository }}
             docker run --name ${{ github.event.repository.name }} \
               -p ${{ vars.PORT }}:3000 \
-              -e UPSTASH_REDIS_REST_URL=${{ vars.UPSTASH_REDIS_REST_URL }} \
-              -e UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }} \
-              -e TZ=${{ vars.TZ }} \
-              -e NEXT_TELEMETRY_DISABLED=1 \
               --restart unless-stopped \
               -d ${{ github.repository }}
