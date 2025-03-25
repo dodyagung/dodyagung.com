@@ -15,8 +15,7 @@ RUN pnpm i --frozen-lockfile
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN pnpm build 
-RUN pnpm prune --prod --no-optional
+RUN pnpm build
 
 # Production image, copy all the files and run next
 FROM base AS runner
