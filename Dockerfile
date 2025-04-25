@@ -4,12 +4,13 @@ ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1
 # https://github.com/nodejs/docker-node?tab=readme-ov-file#nodealpine
 RUN apk add --no-cache gcompat
-RUN npm install --global corepack@latest && corepack enable pnpm
+RUN npm install --global corepack@latest && \
+    corepack enable pnpm
 WORKDIR /app
 
 # Install dependencies only when needed
 FROM base AS deps
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm i --frozen-lockfile 
 
 # Rebuild the source code only when needed
