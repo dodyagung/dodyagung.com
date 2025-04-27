@@ -39,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          platforms: linux/amd64,linux/arm64
+          provenance: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -59,6 +59,6 @@ jobs:
             docker pull ${{ github.repository }}
             docker run --name ${{ github.event.repository.name }} \
               --detach \
-              --expose ${{ vars.PORT }}:3000 \
+              --p ${{ vars.PORT }}:3000 \
               --restart unless-stopped \
               ${{ github.repository }}
