@@ -39,7 +39,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          provenance: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -56,9 +55,9 @@ jobs:
           script: |
             docker stop ${{ github.event.repository.name }}
             docker rm ${{ github.event.repository.name }}
-            docker pull ${{ github.repository }}
+            docker pull ghcr.io/${{ github.repository }}
             docker run --name ${{ github.event.repository.name }} \
               --detach \
               -p ${{ vars.PORT }}:3000 \
               --restart unless-stopped \
-              ${{ github.repository }}
+              ghcr.io/${{ github.repository }}
