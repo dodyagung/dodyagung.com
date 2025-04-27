@@ -7,62 +7,56 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      # - name: Log in to GitHub Container Registry
+      # - name: Log in to Docker Hub
       #   uses: docker/login-action@v3
       #   with:
-      #     registry: ghcr.io
-      #     username: ${{ github.actor }}
-      #     password: ${{ secrets.GITHUB_TOKEN }}
+      #     username: ${{ vars.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: |
-            ${{ github.repository }}
-            # ghcr.io/${{ github.repository }}
-          tags: |
-            type=schedule,pattern=nightly,enable=true,priority=1000
-            type=ref,event=branch,enable=false,priority=600
-            type=ref,event=tag,enable=true,priority=600
-            type=ref,event=pr,prefix=pr-,enable=true,priority=600
-            type=raw,enable=true,priority=200,prefix=,suffix=,value={{date 'YYYYMMDD-HHmmss' tz='Asia/Jakarta'}}
-          flavor: |
-            latest=true
+            # ${{ github.repository }}
+            ghcr.io/${{ github.repository }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_vm:
     needs: build
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Remote SSH and update container with latest docker image
-        uses: appleboy/ssh-action@v1.2.1
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ vars.SSH_VM_HOST }}
           username: ${{ vars.SSH_VM_USER }}
           key: ${{ secrets.SSH_VM_KEY }}
           script: |
-            docker rm -f ${{ github.event.repository.name }}
-            docker rmi ${{ github.repository }}
+            docker stop ${{ github.event.repository.name }}
+            docker rm ${{ github.event.repository.name }}
+            docker pull ${{ github.repository }}
             docker run --name ${{ github.event.repository.name }} \
-              -p ${{ vars.PORT }}:3000 \
+              --detach \
+              --expose ${{ vars.PORT }}:3000 \
               --restart unless-stopped \
-              -d ${{ github.repository }}
+              # ${{ github.repository }}
+              ghcr.io/${{ github.repository }}
