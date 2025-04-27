@@ -29,6 +29,8 @@ jobs:
           images: |
             # ${{ github.repository }}
             ghcr.io/${{ github.repository }}
+          tags: |
+            type=schedule
           flavor: |
             latest=true
 
@@ -59,6 +61,6 @@ jobs:
             docker pull ${{ github.repository }}
             docker run --name ${{ github.event.repository.name }} \
               --detach \
-              --p ${{ vars.PORT }}:3000 \
+              -p ${{ vars.PORT }}:3000 \
               --restart unless-stopped \
               ${{ github.repository }}
