@@ -22,13 +22,7 @@ jobs:
           flavor: |
             latest=true
           tags: |
-            type=schedule,enable=true,pattern={{date 'YYYYMMDD-hhmmss' tz='${{ vars.TZ }}'}}
-            type=semver,enable=false
-            type=pep440,enable=false
-            type=match,enable=false
-            type=edge,enable=false
-            type=ref,enable=false
-            type=sha,enable=false
+            type=schedule,pattern={{date 'YYYYMMDD-hhmmss' tz='${{ vars.TZ }}'}}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
