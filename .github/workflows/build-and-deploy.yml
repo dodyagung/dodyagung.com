@@ -22,7 +22,7 @@ jobs:
           flavor: |
             latest=true
           tags: |
-            type=raw,pattern={{date 'YYYYMMDD-HHmmss' tz='${{ vars.TZ }}'}}
+            type=raw,value={{date 'YYYYMMDD-HHmmss' tz='${{ vars.TZ }}'}}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
