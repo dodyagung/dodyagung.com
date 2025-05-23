@@ -3,15 +3,9 @@ name: Build and Deploy
 on: push
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # - name: Log in to Docker Hub
-      #   uses: docker/login-action@v3
-      #   with:
-      #     username: ${{ vars.DOCKERHUB_USERNAME }}
-      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -24,10 +18,17 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            # ${{ github.repository }}
             ghcr.io/${{ github.repository }}
           flavor: |
             latest=true
+          tags: |
+            type=schedule,enable=true,pattern={{date 'YYYYMMDD-hhmmss' tz='${{ vars.TZ }}'}}
+            type=semver,enable=false
+            type=pep440,enable=false
+            type=match,enable=false
+            type=edge,enable=false
+            type=ref,enable=false
+            type=sha,enable=false
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -42,11 +43,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
-
-  deploy_vm:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
+          
       - name: Remote SSH and update container with latest docker image
         uses: appleboy/ssh-action@v1
         with:
