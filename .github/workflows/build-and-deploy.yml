@@ -34,24 +34,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Generate Docker metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=raw,value=latest
-            type=raw,value=${{ needs.prepare-tags.outputs.timestamp }}
-          labels: true
-
       - name: Build and push for ${{ matrix.arch }}
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           platforms: linux/${{ matrix.arch }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ghcr.io/${{ github.repository }}:latest-${{ matrix.arch }}
+            ghcr.io/${{ github.repository }}:${{ needs.prepare-tags.outputs.timestamp }}-${{ matrix.arch }}
           provenance: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -70,15 +61,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Merge multi-arch manifest
+      - name: Merge per-arch tags into multi-arch manifests
         run: |
           REPO=ghcr.io/${{ github.repository }}
-          for tag in latest ${{ needs.prepare-tags.outputs.timestamp }}; do
-            echo "Merging manifest for tag: $tag"
-            docker buildx imagetools create \
-              --tag "$REPO:$tag" \
-              "$REPO:$tag"
-          done
+          TIMESTAMP=${{ needs.prepare-tags.outputs.timestamp }}
+
+          docker buildx imagetools create \
+            --tag "$REPO:latest" \
+            --tag "$REPO:$TIMESTAMP" \
+            "$REPO:latest-amd64" \
+            "$REPO:latest-arm64"
 
   deploy:
     runs-on: ubuntu-latest
