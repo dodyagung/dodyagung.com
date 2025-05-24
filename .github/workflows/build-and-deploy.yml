@@ -3,7 +3,16 @@ name: Build and Deploy
 on: push
 
 jobs:
+  prepare-tags:
+    runs-on: ubuntu-latest
+    outputs:
+      timestamp: ${{ steps.set.outputs.timestamp }}
+    steps:
+      - id: set
+        run: echo "timestamp=$(date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
+
   build:
+    needs: prepare-tags
     strategy:
       matrix:
         include:
@@ -32,7 +41,7 @@ jobs:
           images: ghcr.io/${{ github.repository }}
           tags: |
             type=raw,value=latest
-            type=raw,value={{date 'YYYYMMDD-HHmmss' tz='${{ vars.TZ }}'}}
+            type=raw,value=${{ needs.prepare-tags.outputs.timestamp }}
           labels: true
 
       - name: Build and push for ${{ matrix.arch }}
@@ -48,8 +57,8 @@ jobs:
           cache-to: type=gha,mode=max
 
   merge-manifest:
+    needs: [prepare-tags, build]
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -61,22 +70,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate Docker metadata again
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=raw,value=latest
-            type=raw,value={{date 'YYYYMMDD-HHmmss' tz='${{ vars.TZ }}'}}
-          labels: false
-
-      - name: Merge multi-arch manifest for all tags
+      - name: Merge multi-arch manifest
         run: |
-          echo "${{ steps.meta.outputs.tags }}" | while read tag; do
+          REPO=ghcr.io/${{ github.repository }}
+          for tag in latest ${{ needs.prepare-tags.outputs.timestamp }}; do
+            echo "Merging manifest for tag: $tag"
             docker buildx imagetools create \
-              --tag "$tag" \
-              "$tag"
+              --tag "$REPO:$tag" \
+              "$REPO:$tag"
           done
 
   deploy:
