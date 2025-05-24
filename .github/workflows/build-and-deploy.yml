@@ -73,11 +73,10 @@ jobs:
 
       - name: Merge multi-arch manifest for all tags
         run: |
-          REPO=ghcr.io/${{ github.repository }}
           echo "${{ steps.meta.outputs.tags }}" | while read tag; do
             docker buildx imagetools create \
               --tag "$tag" \
-              "$REPO@$tag"
+              "$tag"
           done
 
   deploy:
