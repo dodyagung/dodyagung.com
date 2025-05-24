@@ -9,7 +9,7 @@ jobs:
       timestamp: ${{ steps.set.outputs.timestamp }}
     steps:
       - id: set
-        run: echo "timestamp=$(TZ=${{ env.TZ }} date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
+        run: echo "timestamp=$(TZ=${{ vars.TZ }} date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
 
   build:
     needs: prepare-tags
