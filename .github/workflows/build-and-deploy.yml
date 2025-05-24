@@ -8,8 +8,12 @@ jobs:
     outputs:
       timestamp: ${{ steps.set.outputs.timestamp }}
     steps:
-      - id: set
-        run: echo "timestamp=$(TZ=$TZ date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
+      - name: Install tzdata
+        run: sudo apt update && sudo apt install -y tzdata
+  
+      - name: Generate timestamp in TZ
+        id: set
+        run: echo "timestamp=$(TZ=Asia/Jakarta date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
 
   build:
     needs: prepare-tags
