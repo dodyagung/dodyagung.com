@@ -9,6 +9,8 @@ jobs:
       timestamp: ${{ steps.set.outputs.timestamp }}
     steps:
       - id: set
+        env:
+          TZ: Asia/Jakarta
         run: echo "timestamp=$(date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
 
   build:
