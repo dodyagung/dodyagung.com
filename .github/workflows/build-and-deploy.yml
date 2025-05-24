@@ -15,39 +15,74 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Log in to GitHub Container Registry
+      - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract Docker metadata
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Generate Docker metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}
-          tags: type=raw,value={{date 'YYYYMMDD-HHmmss' tz='${{ vars.TZ }}'}}
-          flavor: latest=true
+          tags: |
+            type=raw,value=latest
+            type=raw,value={{date 'YYYYMMDD-HHmmss' tz='${{ vars.TZ }}'}}
+          labels: true
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build and push image for ${{ matrix.arch }}
+      - name: Build and push for ${{ matrix.arch }}
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           platforms: linux/${{ matrix.arch }}
-          tags: ${{ steps.meta.outputs.tags }}-linux-${{ matrix.arch }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           provenance: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  deploy:
+  merge-manifest:
     runs-on: ubuntu-latest
     needs: build
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate Docker metadata again
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=raw,value=latest
+            type=raw,value={{date 'YYYYMMDD-HHmmss' tz='${{ vars.TZ }}'}}
+          labels: false
+
+      - name: Merge multi-arch manifest for all tags
+        run: |
+          for tag in ${{ steps.meta.outputs.tags }}; do
+            docker buildx imagetools create \
+              --tag $tag \
+              ghcr.io/${{ github.repository }}@$(docker buildx imagetools inspect $tag --format '{{json .Manifest.Descriptors}}' | jq -r '.[] | select(.platform.architecture=="amd64") | .digest') \
+              ghcr.io/${{ github.repository }}@$(docker buildx imagetools inspect $tag --format '{{json .Manifest.Descriptors}}' | jq -r '.[] | select(.platform.architecture=="arm64") | .digest')
+          done
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: merge-manifest
     steps:
       - name: Deploy to remote server via SSH
         uses: appleboy/ssh-action@v1
@@ -58,9 +93,9 @@ jobs:
           script: |
             docker stop ${{ github.event.repository.name }} || true
             docker rm ${{ github.event.repository.name }} || true
-            docker pull ghcr.io/${{ github.repository }}
+            docker pull ghcr.io/${{ github.repository }}:latest
             docker run --name ${{ github.event.repository.name }} \
               --detach \
               -p ${{ vars.PORT }}:3000 \
               --restart unless-stopped \
-              ghcr.io/${{ github.repository }}
+              ghcr.io/${{ github.repositor
