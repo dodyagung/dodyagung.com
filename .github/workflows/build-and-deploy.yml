@@ -8,7 +8,8 @@ jobs:
     outputs:
       timestamp: ${{ steps.set.outputs.timestamp }}
     steps:
-      - id: set
+      - name: Create Timestamp
+        id: set
         run: echo "timestamp=$(TZ=${{ vars.TZ }} date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
 
   build:
@@ -18,11 +19,12 @@ jobs:
         include:
           - arch: amd64
             os: ubuntu-latest
-          - arch: arm64
-            os: ubuntu-24.04-arm
+          # - arch: arm64
+          #   os: ubuntu-24.04-arm
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Get the Source Code
+        uses: actions/checkout@v4
 
       - name: Log in to GHCR
         uses: docker/login-action@v3
@@ -47,34 +49,39 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  merge-manifest:
-    needs: [prepare-tags, build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Release chart to GH Pages
+        uses: helm/chart-releaser-action@v1
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+  # merge-manifest:
+  #   needs: [prepare-tags, build]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v3
 
-      - name: Merge per-arch tags into multi-arch manifests
-        run: |
-          REPO=ghcr.io/${{ github.repository }}
-          TIMESTAMP=${{ needs.prepare-tags.outputs.timestamp }}
+  #     - name: Log in to GHCR
+  #       uses: docker/login-action@v3
+  #       with:
+  #         registry: ghcr.io
+  #         username: ${{ github.actor }}
+  #         password: ${{ secrets.GITHUB_TOKEN }}
 
-          docker buildx imagetools create \
-            --tag "$REPO:latest" \
-            --tag "$REPO:$TIMESTAMP" \
-            "$REPO:latest-amd64" \
-            "$REPO:latest-arm64"
+  #     - name: Merge per-arch tags into multi-arch manifests
+  #       run: |
+  #         REPO=ghcr.io/${{ github.repository }}
+  #         TIMESTAMP=${{ needs.prepare-tags.outputs.timestamp }}
+
+  #         docker buildx imagetools create \
+  #           --tag "$REPO:latest" \
+  #           --tag "$REPO:$TIMESTAMP" \
+  #           "$REPO:latest-amd64" \
+  #           "$REPO:latest-arm64"
 
   deploy:
     runs-on: ubuntu-latest
-    needs: merge-manifest
+    # needs: merge-manifest
     steps:
       - name: Deploy to remote server via SSH
         uses: appleboy/ssh-action@v1
@@ -83,11 +90,10 @@ jobs:
           username: ${{ vars.SSH_VM_USER }}
           key: ${{ secrets.SSH_VM_KEY }}
           script: |
-            docker stop ${{ github.event.repository.name }} || true
-            docker rm ${{ github.event.repository.name }} || true
-            docker pull ghcr.io/${{ github.repository }}:latest
-            docker run --name ${{ github.event.repository.name }} \
-              --detach \
-              -p ${{ vars.PORT }}:3000 \
-              --restart unless-stopped \
-              ghcr.io/${{ github.repository }}:latest
+            TIMESTAMP=${{ needs.prepare-tags.outputs.timestamp }}
+            
+            helm upgrade ${{ github.event.repository.name }} /tmp/helm-charts \
+              --install \
+              --set image.tag="$TIMESTAMP" \
+              --atomic \
+              --debug
