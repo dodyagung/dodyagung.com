@@ -93,7 +93,7 @@ jobs:
       - name: Upgrade with helm
         run: |
           TIMESTAMP=${{ needs.prepare-tags.outputs.timestamp }}
-          RELEASE_NAME=${{ github.event.repository.name }}
+          RELEASE_NAME=$(echo "${{ github.event.repository.name }}" | tr -d '.')
 
           helm upgrade $RELEASE_NAME helm-charts \
             --install \
