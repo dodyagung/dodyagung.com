@@ -87,6 +87,7 @@ jobs:
 
       - name: Configure kubeconfig
         run: |
+          mkdir -p $HOME/.kube
           echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 -d > $HOME/.kube/config
         
       - name: Upgraden with helm
