@@ -90,10 +90,11 @@ jobs:
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
         
-      - name: Upgraden with helm
+      - name: Upgrade with helm
         run: |
           TIMESTAMP=${{ needs.prepare-tags.outputs.timestamp }}
-            
+
+          cd ${{ github.event.repository.name }} 
           helm upgrade ${{ github.event.repository.name }} helm-charts \
             --install \
             --set image.tag="$TIMESTAMP" \
