@@ -73,44 +73,29 @@ jobs:
   #           --tag "$REPO:$TIMESTAMP" \
   #           "$REPO:latest-amd64" \
   #           "$REPO:latest-arm64"
-
-  release-chart:
-    needs: build
-    permissions:
-      contents: write
+          
+  deploy:
     runs-on: ubuntu-latest
+    # needs: merge-manifest
+    needs: build
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Configure Git
+      - name: Install helm
+        uses: azure/setup-helm@v4
+
+      - name: Configure kubeconfig
         run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
-      - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1
-        env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   # needs: merge-manifest
-  #   needs: build
-  #   steps:
-  #     - name: Deploy to remote server via SSH
-  #       uses: appleboy/ssh-action@v1
-  #       with:
-  #         host: ${{ vars.SSH_VM_HOST }}
-  #         username: ${{ vars.SSH_VM_USER }}
-  #         key: ${{ secrets.SSH_VM_KEY }}
-  #         script: |
-  #           TIMESTAMP=${{ needs.prepare-tags.outputs.timestamp }}
+          echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 -d > $HOME/.kube/config
+        
+      - name: Upgrade helm
+        with:
+          script: |
+            TIMESTAMP=${{ needs.prepare-tags.outputs.timestamp }}
             
-  #           helm upgrade ${{ github.event.repository.name }} /tmp/helm-charts \
-  #             --install \
-  #             --set image.tag="$TIMESTAMP" \
-  #             --atomic \
-  #             --debug
+            helm upgrade ${{ github.event.repository.name }} helm-charts \
+              --install \
+              --set image.tag="$TIMESTAMP" \
+              --atomic \
+              --debug
