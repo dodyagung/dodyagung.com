@@ -89,13 +89,12 @@ jobs:
         run: |
           echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 -d > $HOME/.kube/config
         
-      - name: Upgrade helm
-        with:
-          script: |
-            TIMESTAMP=${{ needs.prepare-tags.outputs.timestamp }}
+      - name: Upgraden with helm
+        run: |
+          TIMESTAMP=${{ needs.prepare-tags.outputs.timestamp }}
             
-            helm upgrade ${{ github.event.repository.name }} helm-charts \
-              --install \
-              --set image.tag="$TIMESTAMP" \
-              --atomic \
-              --debug
+          helm upgrade ${{ github.event.repository.name }} helm-charts \
+            --install \
+            --set image.tag="$TIMESTAMP" \
+            --atomic \
+            --debug
