@@ -1,5 +1,5 @@
 apiVersion: v2
-name: dodyagung.com
+name: dodyagungcom
 description: My personal website, built with Next.js 15 (App Router), Tailwind CSS 4 and MDX 3.
 
 # A chart can be either an 'application' or a 'library' chart.
