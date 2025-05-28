@@ -82,6 +82,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     # needs: merge-manifest
+    needs: build
     steps:
       - name: Deploy to remote server via SSH
         uses: appleboy/ssh-action@v1
