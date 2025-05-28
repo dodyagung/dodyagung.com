@@ -75,6 +75,7 @@ jobs:
   #           "$REPO:latest-arm64"
 
   release-chart:
+    needs: build
     permissions:
       contents: write
     runs-on: ubuntu-latest
