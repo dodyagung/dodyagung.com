@@ -98,7 +98,7 @@ jobs:
           helm upgrade $RELEASE_NAME helm-charts \
             --install \
             --set image.tag="$TIMESTAMP" \
-            --set "env[0].name=TZ" --set "env[0].value=$TZ"
+            --set "env[0].name=TZ" --set "env[0].value=$TZ" \
             --atomic \
             --debug
 
