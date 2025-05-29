@@ -93,10 +93,12 @@ jobs:
         run: |
           TIMESTAMP=${{ needs.prepare-tags.outputs.timestamp }}
           RELEASE_NAME=$(echo "${{ github.event.repository.name }}" | tr -d '.')
+          TZ=${{ vars.TZ }}
 
           helm upgrade $RELEASE_NAME helm-charts \
             --install \
             --set image.tag="$TIMESTAMP" \
+            --set "env[0].name=TZ" --set "env[0].value=$TZ"
             --atomic \
             --debug
 
