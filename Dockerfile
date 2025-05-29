@@ -1,9 +1,12 @@
 # Base image
 FROM node:lts-alpine AS base
 ENV NODE_ENV=production \
-    NEXT_TELEMETRY_DISABLED=1
+    NEXT_TELEMETRY_DISABLED=1 \
+    TZ=Asia/Jakarta
 # https://github.com/nodejs/docker-node?tab=readme-ov-file#nodealpine
 RUN apk add --no-cache gcompat
+RUN apk add --no-cache tzdata && \
+    ln -s /usr/share/zoneinfo/$TZ /etc/localtime
 RUN npm install --global corepack@latest && \
     corepack enable pnpm
 WORKDIR /app
