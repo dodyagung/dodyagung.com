@@ -5,6 +5,7 @@ metadata:
   labels:
     {{- include "helm-charts.labels" . | nindent 4 }}
 spec:
+  revisionHistoryLimit: 3
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
