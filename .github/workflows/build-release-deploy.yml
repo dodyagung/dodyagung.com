@@ -89,7 +89,7 @@ jobs:
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
         
-      - name: Upgrade with helm
+      - name: Deploy new release
         run: |
           TIMESTAMP=${{ needs.prepare-tags.outputs.timestamp }}
           RELEASE_NAME=$(echo "${{ github.event.repository.name }}" | tr -d '.')
@@ -99,3 +99,9 @@ jobs:
             --set image.tag="$TIMESTAMP" \
             --atomic \
             --debug
+
+      - name: Test the deployment
+        run: |
+          RELEASE_NAME=$(echo "${{ github.event.repository.name }}" | tr -d '.')
+
+          helm test $RELEASE_NAME
