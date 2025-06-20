@@ -2,6 +2,10 @@ name: Build, Release and Deploy
 
 on: push
 
+permissions:
+  contents: read
+  packages: write
+  
 jobs:
   prepare-tags:
     runs-on: ubuntu-latest
