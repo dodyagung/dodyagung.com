@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const socials = [
   {
     icon: <SiX size={20} />,
-    href: "https://twitter.com/dodyags",
+    href: "https://x.com/dodyags",
     label: "X",
     handle: "@dodyags",
   },
