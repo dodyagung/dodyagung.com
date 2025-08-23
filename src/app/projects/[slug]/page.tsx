@@ -2,10 +2,14 @@ import { Header } from "@/app/components/header";
 import { allSlugs, getProject } from "@/app/libs/mdx";
 import type { Metadata } from "next";
 
-let title: string;
-
-export async function generateMetadata(): Promise<Metadata> {
-  return { title };
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const Project = await getProject(slug);
+  return { title: Project.metadata.title };
 }
 
 export default async function Page({
@@ -15,7 +19,6 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const Project = await getProject(slug);
-  title = Project.metadata.title;
 
   return (
     <div className=" bg-zinc-50 min-h-screen">
