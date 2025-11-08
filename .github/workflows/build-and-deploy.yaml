@@ -44,7 +44,7 @@ jobs:
           kubeconfig: ${{ secrets.KUBECONFIG }}
           overrule_existing_kubeconfig: true
           exec: |
-            helm upgrade ${{ github.event.repository.name }} helm-charts \
+            helm upgrade ${{ replace(github.event.repository.name, '.', '') }} helm-charts \
               --atomic \
               --debug \
               --history-max 2 \
