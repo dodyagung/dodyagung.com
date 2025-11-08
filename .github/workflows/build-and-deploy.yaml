@@ -1,0 +1,53 @@
+name: Build and Deploy
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ghcr.io/${{ github.repository }}:latest
+          provenance: false
+
+      - name: Delete untagged, keep latest
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: ${{ github.event.repository.name }}
+          package-type: container
+          delete-only-untagged-versions: true
+          min-versions-to-keep: 0
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v5
+
+      - name: Deploy to k8s with helm
+        uses: WyriHaximus/github-action-helm3@v4
+        with:
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+          overrule_existing_kubeconfig: true
+          exec: |
+            helm upgrade ${{ github.event.repository.name }} helm-charts \
+              --atomic \
+              --debug \
+              --history-max 2 \
+              --install \
+              --set image.tag="latest" \
+              --wait
