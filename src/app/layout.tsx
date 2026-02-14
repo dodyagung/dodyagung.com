@@ -9,7 +9,7 @@ const fontCal = localFont({
 });
 
 export const metadata: Metadata = {
-  description: "A backend enthusiast. Loves Golang and Typescript.",
+  description: "A backend and devsecops enthusiast.",
 };
 
 export default function RootLayout({
