@@ -57,5 +57,5 @@ jobs:
               --set-string podAnnotations.deployedBy="${{ github.actor }}" \
               --set-string podAnnotations.projectBranch="${{ github.ref_name }}" \
               --set-string podAnnotations.projectCommit="$(echo $GITHUB_SHA | cut -c1-7)" \
-              --set-string podAnnotations.projectPath="${{ github.repository }}"
+              --set-string podAnnotations.projectPath="${{ github.repository }}" \
               --wait
