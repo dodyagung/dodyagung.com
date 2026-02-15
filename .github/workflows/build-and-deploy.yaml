@@ -52,5 +52,10 @@ jobs:
               --debug \
               --history-max 2 \
               --install \
-              --set image.tag="latest" \
+              --set-string image.tag="latest" \
+              --set-string podAnnotations.deployedAt="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+              --set-string podAnnotations.deployedBy="${{ github.actor }}" \
+              --set-string podAnnotations.projectBranch="${{ github.ref_name }}" \
+              --set-string podAnnotations.projectCommit="$(echo $GITHUB_SHA | cut -c1-7)" \
+              --set-string podAnnotations.projectPath="${{ github.repository }}"
               --wait
