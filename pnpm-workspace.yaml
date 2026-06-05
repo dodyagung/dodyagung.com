@@ -6,3 +6,5 @@ allowBuilds:
 overrides:
   "@types/react": "19.2.16"
   "@types/react-dom": "19.2.3"
+  postcss: "^8.5.10"
+  webpack: "^5.104.1"
