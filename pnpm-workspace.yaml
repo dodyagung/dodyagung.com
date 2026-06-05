@@ -1,5 +1,8 @@
-onlyBuiltDependencies:
-  - '@sentry/cli'
-  - '@tailwindcss/oxide'
-  - sharp
-  - unrs-resolver
+allowBuilds:
+  "@sentry/cli": true
+  "@tailwindcss/oxide": true
+  sharp: true
+  unrs-resolver: true
+overrides:
+  "@types/react": "19.2.16"
+  "@types/react-dom": "19.2.3"
