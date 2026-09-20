@@ -1,4 +1,5 @@
 import { opendirSync } from "fs";
+import { cacheLife } from "next/cache";
 import { MDXContent } from "mdx/types";
 
 const directoryPath = "./src/projects/content";
@@ -19,6 +20,9 @@ export interface Project {
 }
 
 async function allFiles() {
+  "use cache";
+  cacheLife("max");
+
   const result: string[] = [];
   const dir = opendirSync(directoryPath);
   for await (const entry of dir) {

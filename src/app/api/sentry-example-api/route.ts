@@ -1,6 +1,6 @@
+import { connection } from "next/server";
 import { NextResponse } from "next/server";
 
-export const dynamic = "force-dynamic";
 class SentryExampleAPIError extends Error {
   constructor(message: string | undefined) {
     super(message);
@@ -8,7 +8,8 @@ class SentryExampleAPIError extends Error {
   }
 }
 // A faulty API route to test Sentry's error monitoring
-export function GET() {
+export async function GET() {
+  await connection();
   throw new SentryExampleAPIError(
     "This error is raised on the backend called by the example page.",
   );
