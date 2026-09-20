@@ -8,7 +8,7 @@ overrides:
   '@types/react': 19.3.0
   '@types/react-dom': 19.3.0
   postcss: ^8.5.10
-  toml: 4.1.2
+  toml: 4.2.0
   webpack: ^5.104.1
 
 importers:
@@ -3134,8 +3134,8 @@ packages:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
 
-  toml@4.1.2:
-    resolution: {integrity: sha512-m0vXfHODcw3gk+KONAOlVQ5yNHc3yS3B1ybM3HS1vqDoS0RWTDDVBVVTYi8hH0k+2OM1vmo9fb1WX9EVqjqfHA==}
+  toml@4.2.0:
+    resolution: {integrity: sha512-TvAJjbHZlYmI323+srtqHQFyJsoWy6mI09ppkuj9+iRsqsVKG9fvTcOP7FHF2UCb0QSYtjEavffrKzdd0XgClg==}
     engines: {node: '>=20'}
 
   tr46@0.0.3:
@@ -6400,7 +6400,7 @@ snapshots:
     dependencies:
       '@types/mdast': 4.0.4
       estree-util-value-to-estree: 3.5.0
-      toml: 4.1.2
+      toml: 4.2.0
       unified: 11.0.5
       unist-util-mdx-define: 1.1.2
       yaml: 2.9.1
@@ -6736,7 +6736,7 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
-  toml@4.1.2: {}
+  toml@4.2.0: {}
 
   tr46@0.0.3: {}
 
