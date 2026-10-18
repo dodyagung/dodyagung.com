@@ -1,21 +1,11 @@
-import { withSentryConfig } from "@sentry/nextjs";
+import { withSentryConfig } from "@sentry/nextjs/config";
 import type { NextConfig } from "next";
 import createMDX from "@next/mdx";
 
 const nextConfig: NextConfig = {
-  cacheComponents: true,
-  output: "standalone",
+  output: "export",
+  images: { unoptimized: true },
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
-
-  async redirects() {
-    return [
-      {
-        source: "/dataset/accident",
-        destination: "https://www.kaggle.com/datasets/dodyagung/accident",
-        permanent: false,
-      },
-    ];
-  },
 };
 
 const withMDX = createMDX({
@@ -42,12 +32,8 @@ export default withSentryConfig(withMDX(nextConfig), {
   // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: true,
 
-  // Automatically tree-shake Sentry logger statements to reduce bundle size
-  disableLogger: true,
-
-  // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
-  // See the following for more information:
-  // https://docs.sentry.io/product/crons/
-  // https://vercel.com/docs/cron-jobs
-  automaticVercelMonitors: true,
+  webpack: {
+    treeshake: { removeDebugLogging: true },
+    automaticVercelMonitors: true,
+  },
 });
