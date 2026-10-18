@@ -1,13 +1,21 @@
 name: Build and Deploy
 permissions:
   contents: read
-  packages: write
-  
-on: push
+
+on:
+  push:
+    branches: [master]
+
+concurrency:
+  group: build-and-deploy-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Login to GHCR
         uses: docker/login-action@v3
@@ -25,6 +33,8 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
           provenance: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Delete untagged, keep latest
         uses: actions/delete-package-versions@v5
@@ -37,6 +47,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    permissions:
+      contents: read
     steps:
       - name: Checkout source code
         uses: actions/checkout@v5
